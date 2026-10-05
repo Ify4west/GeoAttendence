@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            }, 
+        }
+    </script>
+    <title>GeoAttendance Dashboard</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100">
+<div class="flex min-h-screen overflow-hidden">
+    <aside class="hidden md:flex w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex-col">
+        <div class="p-6 flex items-center gap-3">
+            <div class="bg-primary p-2 rounded-lg text-white">
+                <span class="material-symbols-outlined block">location_on</span>
+            </div>
+            <h2 class="text-xl font-bold tracking-tight text-slate-900 dark:text-white leading-none">GeoAttend</h2>
+        </div>
+        <nav class="flex-1 px-4 space-y-1">
+            <div class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary font-semibold cursor-pointer">
+                <span class="material-symbols-outlined">dashboard</span>
+                <p class="text-sm">Dashboard</p>
+            </div>
+            <div class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+                <span class="material-symbols-outlined">history</span>
+                <p class="text-sm">History</p>
+            </div>
+            <div class="flex items-center gap-3 px-3 py-3 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer">
+                <span class="material-symbols-outlined">settings</span>
+                <p class="text-sm">Settings</p>
+                </div>
+        </nav>
+        <div class="p-4 border-t border-slate-200 dark:border-slate-800">
+            <div class="flex items-center gap-3 p-2">
+                <div class="size-10 rounded-full bg-primary/10 text-primary grid place-items-center font-bold">AJ</div>
+                <div class="flex flex-col">
+                    <h3 class="text-sm font-semibold truncate">Alex Johnson</h3>
+                    <p class="text-xs text-slate-500">ID: #88291</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 flex flex-col overflow-y-auto">
+        <header class="h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 sm:px-8 flex items-center justify-between sticky top-0 z-10">
+            <div>
+                <h1 class="text-lg font-semibold text-slate-900 dark:text-white">Admin Portal</h1>
+            </div>
+            <a href="/admin" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-700 dark:text-slate-300 transition-all font-medium text-sm">
+                <span class="material-symbols-outlined text-sm">admin_panel_settings</span>
+                Manager Portal
+            </a>
+        </header>
+
+        <div class="p-4 sm:p-8 max-w-5xl mx-auto w-full">
+            <div class="mb-8">
+                <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">Mark Attendance</h2>
+                <p class="text-slate-500 mt-2">Upload a photo with EXIF date and GPS data to verify attendance.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2 space-y-6">
+                    <form id="attendance-form" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+                        <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-4 border-b border-slate-200 dark:border-slate-800">
+                            <label class="block">
+                                <span class="text-xs text-slate-500 font-medium uppercase tracking-wider">Employee Name</span>
+                                <input id="employee-name" name="employee_name" type="text" value="Alex Johnson" required class="mt-2 w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-950 dark:text-white"/>
+                            </label>
+                            <label class="block">
+                                <span class="text-xs text-slate-500 font-medium uppercase tracking-wider">Employee ID</span>
+                                <input id="employee-id" name="employee_id" type="text" value="88291" required class="mt-2 w-full rounded-lg border-slate-300 dark:border-slate-700 dark:bg-slate-950 dark:text-white"/>
+                            </label>
+                        </div>
+                        <div class="relative bg-slate-100 dark:bg-slate-950 aspect-video flex items-center justify-center">
+                            <img id="preview-image" class="hidden absolute inset-0 h-full w-full object-contain bg-slate-950" alt="Selected attendance upload preview"/>
+                            <div id="camera-placeholder" class="absolute inset-0 bg-slate-200 dark:bg-slate-800 flex flex-col items-center justify-center text-slate-400 dark:text-slate-600">
+                                <span class="material-symbols-outlined text-6xl mb-2">photo_camera</span>
+                                <p class="text-sm font-medium">No photo selected</p>
+                            </div>
+                            <div class="absolute top-4 right-4 flex gap-2">
+                                <span id="upload-chip" class="bg-slate-900/70 text-white px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                                    <span class="size-2 bg-white rounded-full"></span> Ready
+                                </span>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-white dark:bg-slate-900 flex flex-col sm:flex-row gap-4">
+                            <label class="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl font-bold text-slate-900 dark:text-white transition-all cursor-pointer">
+                                <span class="material-symbols-outlined">upload_file</span>
+                                Upload Photo
+                                <input id="image-input" name="image" type="file" accept="image/*" class="sr-only"/>
+                            </label>
+                            <button id="submit-button" type="submit" class="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-primary hover:bg-primary/90 rounded-xl font-bold text-white transition-all shadow-lg shadow-primary/20 disabled:opacity-60 disabled:cursor-not-allowed" disabled>
+                                <span class="material-symbols-outlined">verified</span>
+                                Mark Attendance
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+                            <div id="status-icon-wrap" class="bg-amber-100 dark:bg-amber-900/30 text-amber-600 p-3 rounded-full">
+                                <span id="status-icon" class="material-symbols-outlined block">pending_actions</span>
+                            </div>
+                             <div>
+                                <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Attendance Status</p>
+                                <p id="attendance-status" class="text-lg font-bold text-slate-900 dark:text-white">Pending Verification</p>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+                            <div class="bg-sky-100 dark:bg-sky-900/30 text-sky-600 p-3 rounded-full">
+                                <span class="material-symbols-outlined block">fact_check</span>
+                            </div>
+                            <div>
+                                <p class="text-xs text-slate-500 font-medium uppercase tracking-wider">Verification Result</p>
+                                <p id="attendance-reason" class="text-lg font-bold text-slate-900 dark:text-white">Waiting for upload</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm">
+                        <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                            <h3 class="font-bold text-slate-900 dark:text-white">Office Location</h3>
+                            <span class="material-symbols-outlined text-primary">my_location</span>
+                        </div>
+                        <div class="h-48 bg-slate-200 dark:bg-slate-800 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-[linear-gradient(135deg,#dbeafe_0%,#e2e8f0_45%,#dcfce7_100%)]"></div>
+                            <div class="absolute left-1/2 top-1/2 size-28 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary/40 bg-primary/10"></div>
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <span class="material-symbols-outlined text-primary text-5xl relative z-10">location_on</span>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <p class="text-sm font-semibold text-slate-900 dark:text-white">{{ location.location_name }}</p>
+                            <p class="text-xs text-slate-500 mt-1">Latitude: {{ location.latitude }} | Longitude: {{ location.longitude }}</p>
+                            <p class="text-xs text-slate-500 mt-1">Radius: {{ location.radius_meters }} meters</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary/5 dark:bg-primary/10 p-6 rounded-2xl border border-primary/20">
+                        <h3 class="font-bold text-primary mb-2 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-lg">info</span>
+                            Instructions
+                        </h3>
+                        <ul class="text-sm text-slate-600 dark:text-slate-400 space-y-2 list-disc pl-4">
+                            <li>Use an original phone photo, not a screenshot.</li>
+                            <li>The photo must include EXIF GPS location.</li>
+                            <li>The photo must include EXIF DateTimeOriginal.</li>
+                            <li>The photo date must be today.</li>
+                            <li>Photos after 9:00 AM are marked late.</li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    const form = document.getElementById("attendance-form");
+    const input = document.getElementById("image-input");
+    const submitButton = document.getElementById("submit-button");
+    const previewImage = document.getElementById("preview-image");
+    const placeholder = document.getElementById("camera-placeholder");
+    const statusText = document.getElementById("attendance-status");
+    const reasonText = document.getElementById("attendance-reason");
+    const chip = document.getElementById("upload-chip");
+    const statusIcon = document.getElementById("status-icon");
+    const statusIconWrap = document.getElementById("status-icon-wrap");
+
+    function setStatus(status, reason) {
+        statusText.textContent = status;
+        reasonText.textContent = reason;
+
+        statusIconWrap.className = "p-3 rounded-full";
+
+        if (status === "PRESENT") {
+            statusIcon.textContent = "check_circle";
+            statusIconWrap.classList.add("bg-emerald-100", "dark:bg-emerald-900/30", "text-emerald-600");
+        } else if (status === "LATE") {
+            statusIcon.textContent = "schedule";
+            statusIconWrap.classList.add("bg-amber-100", "dark:bg-amber-900/30", "text-amber-600");
+        } else {
+            statusIcon.textContent = "cancel";
+            statusIconWrap.classList.add("bg-rose-100", "dark:bg-rose-900/30", "text-rose-600");
+        }
+    }
+
+    input.addEventListener("change", () => {
+        const file = input.files[0];
+        submitButton.disabled = !file;
+
+        if (!file) {
+            previewImage.classList.add("hidden");
+            placeholder.classList.remove("hidden");
+            chip.textContent = "Ready";
+            setStatus("Pending Verification", "Waiting for upload");
+            return;
+        }
+
+        previewImage.src = URL.createObjectURL(file);
+        previewImage.classList.remove("hidden");
+        placeholder.classList.add("hidden");
+        chip.textContent = "Selected";
+        setStatus("Ready", file.name);
+    });
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const file = input.files[0];
+        if (!file) return;
+
+        const formData = new FormData(form);
+
+        submitButton.disabled = true;
+        chip.textContent = "Checking";
+        setStatus("Verifying", "Reading EXIF date and GPS data...");
+
+        try {
+            const response = await fetch("/mark_attendance", {
+                method: "POST",
+                body: formData
+            });
+            const result = await response.json();
+            setStatus(result.status, result.reason);
+            chip.textContent = response.ok ? "Done" : "Rejected";
+        } catch (error) {
+            setStatus("REJECTED", "Could not connect to the attendance server");
+            chip.textContent = "Error";
+        } finally {
+            submitButton.disabled = false;
+        }
+        });
+</script>
+</body>
+</html>

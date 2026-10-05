@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Geo Attendance - Secure Login</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1152d4",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+                },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased">
+<div class="relative flex min-h-screen w-full flex-col items-center justify-center overflow-x-hidden p-4">
+    <div class="w-full max-w-[480px] flex flex-col items-center">
+        <div class="mb-8 flex flex-col items-center gap-3">
+            <div class="size-16 bg-primary/10 text-primary rounded-xl flex items-center justify-center">
+                <span class="material-symbols-outlined !text-4xl">location_on</span>
+            </div>
+            <div class="text-center">
+                <h1 class="text-slate-900 dark:text-slate-100 text-3xl font-bold tracking-tight">Geo Attendance</h1>
+                <p class="text-slate-500 dark:text-slate-400 mt-2 text-base">Secure admin and manager access</p>
+            </div>
+        </div>
+
+        <div class="w-full bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-800 p-8">
+            <div class="mb-6">
+                <div class="w-full h-40 rounded-lg bg-slate-100 dark:bg-slate-800 relative overflow-hidden mb-6">
+                    <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary via-transparent to-transparent"></div>
+                    <div class="w-full h-full bg-center bg-cover" data-alt="A modern office building with blue glass windows" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDipbn9YWK26r0JY-PKLyQTIGeR2LfiWJ1eVinLaWQZ90lGtG2GSFQrHWc6VuiRsXOBXk6nPJoZNUKzkdjr123tDJ9goPVVjMWV13LaREwfh1N76nYOpGzwSSgp6Q6BnghQAYFoJ6uSz45jCYUtjO_Gx4FPgaZ7oy8jcT-5o0Ch03je0f6PY5J42jvEovuDHdkkVrvrg6ySWNEw4uwtxfdg3fgIt2SWCtxCIGtqKutUVOuAVKonPS_ADcSCVPw3rzsfkGE1HTRODVA')"></div>
+                    <div class="absolute bottom-4 left-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur px-3 py-1 rounded-full flex items-center gap-2 border border-slate-200/50 dark:border-slate-700/50">
+                        <span class="material-symbols-outlined text-primary !text-sm">verified_user</span>
+                        <span class="text-xs font-semibold text-slate-700 dark:text-slate-200 uppercase tracking-wider">Manager Dashboard</span>
+                    </div>
+                </div>
+                <h2 class="text-xl font-bold text-slate-900 dark:text-slate-100">Welcome Back</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Please sign in to view attendance records</p>
+            </div>
+
+            {% if error %}
+                <div class="mb-5 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form class="space-y-5" method="post" action="{{ url_for('admin_login') }}">
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="username">Admin / Manager ID</label>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
+                            <span class="material-symbols-outlined !text-xl">badge</span>
+                        </div>
+                        <input id="username" name="username" class="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400" placeholder="admin or manager" type="text" autocomplete="username" required/>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                        <label class="text-sm font-semibold text-slate-700 dark:text-slate-300" for="password">Password</label>
+                        <span class="text-xs font-semibold text-slate-400">Contact admin to reset</span>
+                    </div>
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 group-focus-within:text-primary transition-colors">
+                            <span class="material-symbols-outlined !text-xl">lock</span>
+                        </div>
+                        <input id="password" name="password" class="w-full pl-10 pr-12 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-slate-400" placeholder="Password" type="password" autocomplete="current-password" required/>
+                        <button id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" type="button" aria-label="Show password">
+                            <span id="toggle-password-icon" class="material-symbols-outlined !text-xl">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 py-1">
+                    <input class="w-4 h-4 text-primary border-slate-300 rounded focus:ring-primary" id="remember" name="remember" type="checkbox"/>
+                    <label class="text-sm text-slate-600 dark:text-slate-400" for="remember">Remember this device</label>
+                </div>
+
+                <button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors shadow-lg shadow-primary/20" type="submit">
+                    <span>Sign In</span>
+                    <span class="material-symbols-outlined !text-lg">login</span>
+                </button>
+            </form>
+
+            <div class="mt-5 rounded-lg bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-4 py-3">
+                <p class="text-xs text-slate-500 dark:text-slate-400">Demo manager login: <span class="font-semibold">manager</span> / <span class="font-semibold">manager123</span></p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Demo admin login: <span class="font-semibold">admin</span> / <span class="font-semibold">admin123</span></p>
+            </div>
+        </div>
+
+        <div class="mt-8 flex items-center gap-6 text-slate-400">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined !text-sm">security</span>
+                <span class="text-xs font-medium">Protected Records</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined !text-sm">location_searching</span>
+                <span class="text-xs font-medium">Geo Attendance</span>
+            </div>
+        </div>
+
+        <footer class="mt-12 text-center text-slate-400 text-xs">
+            <p>© 2026 Geo Attendance Solutions. All rights reserved.</p>
+            <div class="mt-2 flex justify-center gap-4">
+                <a class="hover:text-primary transition-colors" href="{{ url_for('home') }}">Employee Check-in</a>
+                <a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+                <a class="hover:text-primary transition-colors" href="#">Support</a>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<script>
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("toggle-password");
+    const togglePasswordIcon = document.getElementById("toggle-password-icon");
+
+    togglePassword.addEventListener("click", () => {
+        const isHidden = passwordInput.type === "password";
+        passwordInput.type = isHidden ? "text" : "password";
+        togglePasswordIcon.textContent = isHidden ? "visibility_off" : "visibility";
+    });
+</script>
+</body>
+</html>
